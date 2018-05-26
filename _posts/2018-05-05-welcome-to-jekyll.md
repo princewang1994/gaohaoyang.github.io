@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "hello jekyll!"
+title:  "Jekyll Markdown模板"
 date:   2018-05-05
 categories: jekyll
 tags: jekyll markdown
@@ -10,6 +10,11 @@ mathjax: true
 
 * content
 {:toc}
+## 前言
+
+本模板针对Jekyll框架可以使用的Markdown语法进行总结，除少数语法（在本文中为额外说明）之外，其他的语法均可以在各种常见Markdown编辑器中使用，因此也有参考价值，Markdown在技术博客写作中运用十分广泛（另一个与之齐名的是RST），在此记录语法，以供以后参考，本文采用的MD编辑器为[Typora](https://typora.io)，一款极简的Markdown编辑器。
+
+
 
 ##  TOC部分
 
@@ -160,7 +165,7 @@ $$
 
 将图片放在`$BLOG_ROOT/images/`中，并使用`![image_name](url)`插入图片
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_2018052617561527328619.png)
+![](http://oodo7tmt3.bkt.clouddn.com/blog_20180526220800.jpg)
 
 
 
