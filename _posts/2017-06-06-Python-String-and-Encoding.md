@@ -4,7 +4,7 @@ title:  "深入理解Python2中的字符串和编码"
 date:   2018-05-05
 categories: Python
 tags: Python 计算机基础
-excerpt: python2字符串
+excerpt: python2对于中文字符的支持非常不友好，其原因可能是历史遗留问题，Python2的开发年份较早，因此默认采用ASCII编码。这给日后python在出英语外的语言中的运用挖了一个非常大的坑。典型的场景是中文爬虫，或是中文自然语言处理上，因此理解字符串，编码，解码等概念以及思想非常重要，当然这种思想不光适用于python，也给其他语言及应用一些启示。
 mathjax: true
 ---
 
