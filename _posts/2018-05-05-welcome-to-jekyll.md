@@ -4,12 +4,17 @@ title:  "Jekyll Markdown模板"
 date:   2018-05-05
 categories: jekyll
 tags: jekyll markdown
-excerpt: Jekyll的markdown用法说明，方便以后查阅
 mathjax: true
 ---
 
 * content
 {:toc}
+
+Jekyll的markdown用法说明，方便以后查阅
+
+
+
+
 ## 前言
 
 本模板针对Jekyll框架可以使用的Markdown语法进行总结，除少数语法（在本文中为额外说明）之外，其他的语法均可以在各种常见Markdown编辑器中使用，因此也有参考价值，Markdown在技术博客写作中运用十分广泛（另一个与之齐名的是RST），在此记录语法，以供以后参考，本文采用的MD编辑器为[Typora](https://typora.io)，一款极简的Markdown编辑器。
@@ -19,12 +24,14 @@ mathjax: true
 ##  TOC部分
 
 
-jekyll似乎不支持`[TOC]`，很遗憾，希望更新的时候能加上。这里使用了[原repo](https://github.com/Gaohaoyang/gaohaoyang.github.io)中的写法，只要在正文(不包含markdown的title部分)开始的时候加上以下markdown代码即可生成侧边的TOC：
+jekyll似乎不支持`[TOC]`，很遗憾，希望更新的时候能加上。这里使用了[原repo](https://github.com/Gaohaoyang/gaohaoyang.github.io)中的写法，只要在正文(不包含markdown的title部分)开始的时候加上以下markdown代码即可生成侧边的滑动TOC：
 
 ```markdown
 * content
 {:toc}
 ```
+
+> 注意，TOC底下是abstract部分，abstract与TOC之间空一行，abstract和第一个标题之间空四行，这样，abstract会显示在首页，而从第一个标题开始不会显示在首页上。相比于在标题中加入excerpt关键字，这种方法可以再摘要中加入图片和其他的语法。
 
 ##  Markdown title部分说明
 
@@ -35,7 +42,7 @@ title:  "hello jekyll!"
 date:   2018-05-05
 categories: jekyll
 tags: jekyll markdown
-excerpt: Jekyll的markdown用法说明，方便以后查阅
+excerpt: Jekyll的markdown用法说明，方便以后查阅(与TOC一小节中说的方法二选一，推荐上面一个)
 mathjax: true
 ---
 ```
