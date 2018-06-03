@@ -118,6 +118,11 @@ def compress_image(path, thresh=0.2):
     
     file_stat = os.stat(path)
     basename = os.path.basename(path)
+    file_type = basename.split('.')[-1]
+
+    # dont compress gif file
+    if file_type == 'gif':
+        return path
 
     file_size = file_stat.st_size / 1024.**2
     # if file is larger than 200k
@@ -193,6 +198,8 @@ def main(args):
                 url = upload_to_qiniu(path, config)
                 text = text.replace(ori_img, url)
                 uploaded_img += 1 
+            else:
+                print('{} -> no need to upload'.format(md_img))
         
         # if there are images uploaded successfully
         if uploaded_img > 0:
