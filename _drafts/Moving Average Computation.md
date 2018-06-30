@@ -4,13 +4,13 @@ Average:
 - Simple Moving Average (SMA)
 - Exponential Moving Average (EMA)
 
-Given data points $ N $ ($ N $ is data growth with length $k$)
+Given data points $N$ ($N$ is data growth with length $k$)
 
 - SMA 
-	>	$$
-			\frac{1}{n} \sum_{k=1}^{n}{N_k}
-		$$
-	
+$$
+	\frac{1}{n} \sum_{k=1}^{n}{N_k}
+$$
+
 - SMA
 
 ```python
@@ -23,7 +23,3 @@ def SMA(N):
 ```
 
 In `Batch Normalization (BN)` when testing with one testing set, we need to use SMA to estimate the population `Mean` and `Var`
-
-		 
-
-
