@@ -147,6 +147,15 @@ def compress_image(path, thresh=0.2):
     else:
         return path
 
+def file_exist(md_path, path):
+    if os.path.exists(path):
+        return True
+    par_path = os.path.dirname(md_path)
+    path = os.path.join(par_path, path)
+    if os.path.exists(path):
+        return True
+    return False
+
 
 def main(args):
 
@@ -193,7 +202,7 @@ def main(args):
             md_img = md_img.replace('%20', ' ')        
             path = os.path.join(parent_path, md_img)
 
-            if os.path.exists(path) and re.findall(img_postfix_re, md_img): # exist in local file system and is image file format
+            if file_exist(md_img, path) and re.findall(img_postfix_re, md_img): # exist in local file system and is image file format
                 path = compress_image(path)
                 url = upload_to_qiniu(path, config)
                 text = text.replace(ori_img, url)
