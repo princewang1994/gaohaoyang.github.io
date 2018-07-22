@@ -9,13 +9,22 @@ type: page
 * content
 {:toc}
 
+
+## 机器学习资源
+
+- [莫凡Python](https://morvanzhou.github.io)：学习各种框架，入门的好去处
+- 
+
+## 深度学习
+
 ## 工具
 
-## 编程语言
+- [Draw.io](http://draw.io)：一个不错的简易画图软件，基于web，跨平台，完全免费，支持google drive，dropbox等网盘，代码开源，可以自己搭建，[Github地址](https://github.com/jgraph/drawio)在这里。
+- [Processon](https://www.processon.com):和draw.io很像的网站，不过限制作图数量，所以还是推荐draw.io
 
-## 框架&脚手架
+## 框架
 
-### 书籍
+## 书籍
 
 ## 编辑器
 
@@ -33,12 +42,5 @@ type: page
 * [Chrome扩展及应用开发 -图灵电子书](http://www.ituring.com.cn/minibook/950)
 
 * [有哪些鲜为人知却非常有意思、好用的 Chrome 扩展？ -知乎](https://www.zhihu.com/question/23228162#answer-28057391)
-* [Dribbble New Tab](https://chrome.google.com/webstore/detail/dribbble-new-tab/hmhjbefkpednjogghoibpejdmemkinbn)
-
-    新建 tab 时，显示 dribbble 上的精选作品。
 
 ## Other blogs
-
-## Comments
-
-{% include comments.html %}
