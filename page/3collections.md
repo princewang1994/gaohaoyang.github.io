@@ -12,8 +12,8 @@ type: page
 
 ## 机器学习资源
 
-- [莫凡Python](https://morvanzhou.github.io)：学习各种框架，入门的好去处
-- 
+- [莫烦Python](https://morvanzhou.github.io)：学习各种框架，算法入门的好去处
+- [ModelZoo](https://modelzoo.co):寻找别人造的深度学习轮子的网站
 
 ## 深度学习
 
@@ -27,6 +27,8 @@ type: page
 ## 书籍
 
 ## 编辑器
+
+- [Typora](https://typora.io): 一款极简的Markdown编辑器，本站使用的主要编辑器
 
 ## GitBook 及其插件
 
@@ -43,4 +45,6 @@ type: page
 
 * [有哪些鲜为人知却非常有意思、好用的 Chrome 扩展？ -知乎](https://www.zhihu.com/question/23228162#answer-28057391)
 
-## Other blogs
+## Alfred Workflow
+
+- [一键上传图片](https://github.com/princewang1994/markdown-img-upload)
