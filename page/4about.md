@@ -13,14 +13,9 @@ type: page
 
 ## 联系我
 
-* GitHub:
-* email:
-* [Weibo]()
+* GitHub: https://github.com/princewang1994
+* email: princewang1994@gmail.com
 * [知乎]()
-* [Facebook]()
-* [Twitter]()
-* [豆瓣]()
-* [豆瓣音乐人-浩阳的小站]()
 
 ## 关于本站
 
