@@ -15,11 +15,6 @@ type: page
 
 * GitHub: https://github.com/princewang1994
 * email: princewang1994@gmail.com
-* [知乎]()
+* 知乎: [Prince Wang](https://www.zhihu.com/people/princewang-65/activities)
 
 ## 关于本站
-
-
-## Comments
-
-{% include comments.html %}
