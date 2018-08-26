@@ -5,7 +5,7 @@ import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument('title', nargs='+', type=str, help='Title of new blog')
-parser.add_argument('--category', '-c', nargs='+', default=['None'], type=str, help='Categories')
+parser.add_argument('--category', '-c', default='DeepLearning', type=str, help='Blog category')
 parser.add_argument('--tags', '-t', nargs='+', type=str, default=['None'], help='Tags')
 parser.add_argument('--layout', '-l', default='post', type=str, choices=['post', 'page', 'draft'], help='Layout')
 parser.add_argument('--author', default='Prince', type=str, help='Layout')
@@ -55,13 +55,13 @@ def format_header(header):
     lines.append('---')
     return lines
 
-def format_title(layout, title):
+def format_title(title):
     if not isinstance(title, list):
         title = [title]
 
     date = time.strftime("%Y-%m-%d", time.gmtime())
     title = '-'.join(title)
-    return '{}/{}-{}.md'.format(layout_map[layout], date, title)
+    return '{}-{}.md'.format(date, title)
 
 def new_blog(args):
 
@@ -71,7 +71,7 @@ def new_blog(args):
         'layout': args.layout,
         'title': '"{}"'.format(' '.join(args.title)),
         'date':  time.strftime("%Y-%m-%d", time.gmtime()),
-        'categories': ' '.join(args.category),
+        'categories': args.category,
         'tags': ' '.join(args.tags),
         'mathjax': 'true',
         'author': args.author
@@ -83,12 +83,13 @@ def new_blog(args):
     md_lines += [''] * 4
     md_lines += content_template()
 
-    filename = format_title(args.layout, args.title)
+    filename = format_title(args.title)
+    file_path = os.path.join(layout_map[args.layout], args.category, filename)
     print('Writing to {}'.format(filename))
-    if not os.path.exists(filename):
-        write_md(filename, md_lines)
+    if not os.path.exists(file_path):
+        write_md(file_path, md_lines)
     else:
-        print('Blog `{}` exist, skip'.format(filename))
+        print('Blog `{}` exist, skip'.format(file_path))
     print('Done.')
 
 if __name__ == '__main__':
@@ -97,4 +98,4 @@ if __name__ == '__main__':
         args = parser.parse_args()
         new_blog(args)
     else:
-        print('Please run this in blog root')
+        print('Please run this in $BLOG_ROOT')
