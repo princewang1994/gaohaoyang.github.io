@@ -2,7 +2,7 @@
 layout: post
 title: Context Encoding for Semantic Segmentation
 date: 2018-06-07
-categories: Deeplearning 
+categories: DeepLearning 
 tags: Deeplearning MachineLearning
 mathjax: true
 author: Prince
@@ -14,7 +14,7 @@ author: Prince
 
 文章地址[Context Encoding for Semantic Segmentation](https://arxiv.org/abs/1803.08904)
 
-​	语义分割的目标是逐像素分类，对图像中的某一个点进行分类，早期的语义分割任务基于阈值法（自适应阈值OTSU也算是阈值法）效果不好，自Jonathan Long等人提出FCN网络，通过使用没有FC层等需要固定输入大小的网络结构，采用一个几乎通体都是卷积层的网络结构学习输入图像，最后输出一个与输入图像大小一致（或比输入图像稍小）的特征图，最后通过1x1的卷积层来对像素点进行分类。这种FCN结构对整个语义分割任务来说，是一个质的飞越，神经网络也在语义分割这个任务上达到了最好的结果。
+	语义分割的目标是逐像素分类，对图像中的某一个点进行分类，早期的语义分割任务基于阈值法（自适应阈值OTSU也算是阈值法）效果不好，自Jonathan Long等人提出FCN网络，通过使用没有FC层等需要固定输入大小的网络结构，采用一个几乎通体都是卷积层的网络结构学习输入图像，最后输出一个与输入图像大小一致（或比输入图像稍小）的特征图，最后通过1x1的卷积层来对像素点进行分类。这种FCN结构对整个语义分割任务来说，是一个质的飞越，神经网络也在语义分割这个任务上达到了最好的结果。
 
 不过深度学习用在语义分割上还存在着不少难以解决的问题，如多尺度图像问题，或是上下文信息的利用问题等，后来的U-Net，Deeplab，RefineNet，PSPNet都各自使用了不同的结构与方法来解决这些问题，本文的立足点是利用Context上下文信息增强语义分割效果，主要贡献有以下几点：
 

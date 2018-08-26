@@ -2,7 +2,7 @@
 layout: post
 title:  Group Normalization
 date:   2018-06-29
-categories: Deeplearning
+categories: DeepLearning
 tags: MachineLearning DeepLearning ComputerVision
 mathjax: true
 author: Prince
