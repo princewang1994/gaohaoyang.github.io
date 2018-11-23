@@ -10,7 +10,7 @@ author: Prince
 
 * content
 {:toc}
-![](http://oodo7tmt3.bkt.clouddn.com/blog_20180621160239.png)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20180621160239.png)
 
 文章地址[Context Encoding for Semantic Segmentation](https://arxiv.org/abs/1803.08904)
 
@@ -67,7 +67,7 @@ Context Encoding Module是一种利用传统字典学习的方法来解决contex
   - 在主干分支，将刚才固定长度的编码通过一个FC映射到C通道，C即刚才特征提取网络输出的通道数，经过sigmoid后直接乘到特征图上做通道维度的attention
 - 把最后的特征图放大，常规操作如softmax等，最后得到语义分割结果
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_20180621160239.png)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20180621160239.png)
 
 这种方法通过预测物体在输入图片的存在性来利用上下文信息，其优点有以下两点：
 
@@ -88,7 +88,7 @@ Context Encoding Module是一种利用传统字典学习的方法来解决contex
 
 下图是Encoding Layer的一个说明：
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_20180608213755.png)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20180608213755.png)
 
 首先输入时一个[HxWxD]的特征图，然后构造K个中心（$c_0, c_1, ... c_{K-1}$）,现在特征图上的每个位置都可以看做是一个D维的向量$x_i$，每个中心也是D维向量。现在对于某个中心$c_k$，我们把每个点$x_i$对$c_k$的相对坐标都计算出来，作为这个点在这个中心上的投影。把整张图上的所有$x_i$的投影都加起来，就得到了这张图在这个中心上的投影。
 
@@ -115,7 +115,7 @@ $$
 
 ## EncNet
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_20180608211651.png)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20180608211651.png)
 
 经过以上的结构，我们知道，不管多大的特征图都会被映射到固定大小的维度，那么现在就可以在这个基础上做文章了：EncNet的整体架构是ResNet，在经过Stage2后假设我们得到的特征图是d维，按照总结构图的说法，经过一个FC用来做一个多标签分类，使用CrossEntropy作为loss函数，也就是所谓的**SE-loss**，判断图中是否存在某些哪些类别，并且使用另外一个FC映射到C（注意EncNet图中的C就是上文所说的d）经过sigmoid以后，做一个通道维度（Channelwise）的乘法，这样就可以作为attention使用。
 
@@ -125,11 +125,11 @@ $$
 
 文中做了与ResNet的丢笔试眼，并使用消融实验给出了各个部分的提升：
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_20180621161406.png)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20180621161406.png)
 
 可以看到，Encoding的提升比较大（约5个百分点Acc和6.6的mIoU），加入SE-loss以后也提升了一些。最后放一张效果图，主要与FCN作比较，可以看出的是，EncNet对Context更加敏感，在预测上下文环境时比FCN有明显提高：
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_20180621161711.png)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20180621161711.png)
 
 实验代码可以在[这里](https://github.com/zhanghang1989/PyTorch-Encoding)找到
 

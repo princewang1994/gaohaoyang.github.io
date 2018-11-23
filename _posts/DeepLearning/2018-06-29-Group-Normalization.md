@@ -10,7 +10,7 @@ author: Prince
 
 * content
 {:toc}
-![](http://oodo7tmt3.bkt.clouddn.com/blog_20180629220007.png)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20180629220007.png)
 
 文章地址[ arXiv:1803.08494](https://arxiv.org/abs/1803.08494)
 
@@ -64,7 +64,7 @@ BN大法虽然好，但是仍存在着一些问题：
 
 接下来说正事：BN，LN，IN，GN的关系，先上图：
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_20180629220007.png)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20180629220007.png)
 
 我们假设所有的normalization方法都是为了求某一个集合$\mathcal{S_i}$的均值很标准差，只是$\mathcal{S_i}$略有所差别，上图很好的描述了各种Norm方法的差异，先看坐标轴，这里为了降低维数，把一张特征图的H,W维度给展开了，其中蓝色的方块表示属于$S_i$的元素。
 
@@ -150,11 +150,11 @@ PyTorch中F.group_norm暂时还没找到在哪实现的，不过应该和tf的�
 
 实验代码[在这里](https://github.com/facebookresearch/Detectron/ blob/master/projects/GN.)可以找到，这里我们重点看下面两张图：
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_20180629215920.png)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20180629215920.png)
 
 上图描述了BN等一系列方法在大batch（size=32）时训练和验证上的误差表现，可以看到，只对比BN和GN的话，GN的过拟合比BN严重一些，这可能是因为GN没有我们在第一小节中讲到的BN的“正则化”效果有关系，尽管如此，GN还是比LN和IN要强一些。文章也提到，在GN中增加合适的正则化约束有可能改进GN的效果。
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_20180629215940.png)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20180629215940.png)
 
 接下来重点看小batch上的情况，我们看到，随着batchsize的缩小，BN的性能急剧下降，在2 -> 4的过程中下降尤为显著，而GN在batch size下降的过程中性能几乎不受影响。这个实验证明了GN在小batch情况下的性能突出。
 

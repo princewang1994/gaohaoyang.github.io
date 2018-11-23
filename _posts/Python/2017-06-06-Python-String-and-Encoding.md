@@ -54,7 +54,7 @@ python2对于中文字符的支持非常不友好，其原因可能是历史遗�
 
 ## Python中的字符串
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_20180526214318.jpg)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20180526214318.jpg)
 
 
 前面说了，Python的字符串由于历史遗留问题，不得不采用ASCII作为str的默认编码，为了兼容unicode的编码，python中多了一个叫做unicode的类，具体就是在引号前面加上一个u（图来源于网络，侵删）

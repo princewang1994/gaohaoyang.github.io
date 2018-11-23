@@ -10,7 +10,7 @@ mathjax: true
 * content
 {:toc}
 
-![jekyll](http://oodo7tmt3.bkt.clouddn.com/blog_201807222053570342.png)
+![jekyll](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_201807222053570342.png)
 本篇模板是Jekyll的markdown用法说明，针对Jekyll框架可以使用的Markdown语法进行总结，除少数语法（在本文中为额外说明）之外，其他的语法均可以在各种常见Markdown编辑器中使用（本人墙裂推荐[Typora](https://typora.io)一款极简的MarkDown编辑器），因此也有参考价值，Markdown在技术博客写作中运用十分广泛（另一个比较著名的是RST，但用户远不如Markdown）
 
 
@@ -180,7 +180,7 @@ $$
 
 将图片放在`$BLOG_ROOT/images/`中，并使用`![image_name](url)`插入图片
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_20180526220800.jpg)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20180526220800.jpg)
 
 
 

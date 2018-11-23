@@ -10,7 +10,7 @@ author: Prince
 
 * content
 {:toc}
-![](http://oodo7tmt3.bkt.clouddn.com/blog_20180722202027.png)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20180722202027.png)
 
 物体检测领域（Object Detection）领域是计算机视觉的经典问题，其目标是在输入图像中寻找特定类别的物体，并使用矩形框将物体包括在内，并预测出该框的类别。深度学习在物体检测领域已经取得了相比于传统视觉方法质的提升，其中很重要原因就是单阶段检测方法（One-Stage Method）和两阶段检测方法（Two-Stage Method）的出现，本篇博客将就物体检测Two Stage检测经典方法Faster RCNN做一些简单的总结，结合一些源码给出个人的理解。
 
@@ -38,7 +38,7 @@ Fast-RCNN针对后两点做了改进：
 
 ## 3. Faster-RCNN
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_201807221746320413.png)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_201807221746320413.png)
 
 Faster-RCNN能够比Fast更快的原因是使用了一个区域提名网络(Region Proposal Network, RPN)代替SS来做候选框推荐，这种网络能够提取出质量更高，数量更少的候选框。而且把Region Proposal的步骤合并到网络中来，使网络更加end2end。因此FasterRCNN的核心是RPN。能够看出来，Faster-RCNN使用RPN做特征推荐，使用Fast-RCNN作为特征提取器，后面的是和Fast-RCNN是完全一致的。
 
@@ -46,9 +46,9 @@ Faster-RCNN能够比Fast更快的原因是使用了一个区域提名网络(Regi
 
 既然RPN这么重要，那么，RPN是一个什么结构呢，这里我们先来看一下RPN网络的真面目：(这个图是基于VGG的，图片输入size是224，但是实际中实现中一般使用更大的输入图像，如短边600或短边800，这里和ImageNet输入图像大小相同，只是为了理解)
 
-![RPN](http://oodo7tmt3.bkt.clouddn.com/blog_201807221746330880.png)
+![RPN](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_201807221746330880.png)
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_201807221746330673.png)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_201807221746330673.png)
 
 简单来说RPN是目的就是：**通过原图像先使用分类网络（VGG，ResNet，ZFNet等）做特征提取，最后生成候选框，再对候选框进行修正。**
 
@@ -60,7 +60,7 @@ Faster-RCNN能够比Fast更快的原因是使用了一个区域提名网络(Regi
 2. 在特征图上做3x3的卷积，使之产生一个[1x1xC]的向量，这里是为了增加感受野，作为接下来输入全连接层的输入
 2. 把特征图上的每一个坐标[i, j]的**中心**都映射回原图像(如vgg pool5就需要把Feature Map坐标x32)坐标[i', j']以这个点为中心构造以长宽比为1:1, 1:2, 2:1，面积为$128^2, 256^2, 512^2$三种面积的矩形9个（当然可以这里面积是一个超参数，总之生成k个候选框，这里k=9），到此我们总共生成了N\*M\*K个Anchor
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_201807221746340860.png)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_201807221746340860.png)
 
 ### Anchor的用途
 
@@ -68,7 +68,7 @@ Anchor就是生成候选区的始祖，这些生成的Anchor里面有一些与Gr
 
 这里如何定义“像Ground Truth”呢？一个比较常用的方法是使用IoU，也就是两个框的重叠面积占总面积的比例
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_201807221746340868.jpg)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_201807221746340868.jpg)
 
 这里定义IoU：
 
@@ -101,7 +101,7 @@ $$
 
 上面没说完的就是这个SmoothL1Loss，其实很简单，只是一个平滑版的绝对值而已，在[-1, 1]的区间，这个loss被定义为L2 loss，剩余的其他地方被定义为L1 loss：
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_201807221746340907.jpg)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_201807221746340907.jpg)
 （图引自网络）
 
 公式上可以定义为:
@@ -195,16 +195,16 @@ def bbox_transform(ex_rois, gt_rois):
 
 （1）将所有框的得分降序排列，选中最高分及其对应的框（就是下图的0.98这个框，把这个框加入结果S'中）并把该框从S中删除
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_201807221746350156.jpg)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_201807221746350156.jpg)
 
 
 （2）遍历S中剩余的框，如果和当前最高分框(红色)的IoU大于一定阈值threshold，我们就将框从S中删除，其实就是把Rose脸的其他框去掉。
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_201807221746350259.jpg)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_201807221746350259.jpg)
 
 （3）从S未处理的框中继续选一个得分最高的加入到结果S‘中，重复上述过程(1, 2)，开始处理Jack的脸。直至S集合空，此时S'即为所求结果。
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_201807221746360502.jpg)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_201807221746360502.jpg)
 
 NMS的Matlab代码在参考博客中有，这里贴一个[python版的NMS](https://github.com/longcw/faster_rcnn_pytorch/blob/master/faster_rcnn/nms/cpu_nms.pyx)，由于需要大量循环，所以还是需要使用Cython加速。
 
@@ -253,7 +253,7 @@ ROI Pooling是SPPNet中SPP层的特殊情况，当SPP特征层去掉Multi-Scale�
 - 第一种方法：把这些特征都resize为统一大小，这种方法可能会造成特征的变形
 - 第二种方法：设计一个不需要统一输入size，但是能够映射成统一size的操作：SPPnet
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_201807221746360500.png)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_201807221746360500.png)
 
 这里提到空间金字塔特征层，就是为了应对输入size不统一的输入而产生的。
 
@@ -263,7 +263,7 @@ ROI Pooling是SPPNet中SPP层的特殊情况，当SPP特征层去掉Multi-Scale�
 
 金字塔是一个图像识别常常使用的一个Trick，说白了就是Multi-Scale,有时候金字塔是使用一张图像的多种分辨率，这里的做法是：**对同一张图像，使用不同的N来做SPP提取，得到多个向量，然后Concat到一起**，实验证明，Multiscale是非常有效果的。SPPnet的示意图如下：
 
-![](http://oodo7tmt3.bkt.clouddn.com/blog_201807221746370789.png)
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_201807221746370789.png)
 
 有了ROI Pooling这个结构以后，就可以从特征图上直接提取不同大小的候选框，然后导入FC层（当然也可以使用全卷积网络）这里的FC层有两个，一个是Softmax分类（C+1类，包括背景）和BBox回归：
 
