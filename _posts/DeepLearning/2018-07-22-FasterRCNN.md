@@ -92,7 +92,7 @@ $$
 具体来看，BBox回归分为以下几个步骤：
 
 - 将特征提取的出的特征图[N, M, C]使用上面全卷积的方法变为[N, M, 9x4]的Tensor9个候选Anchor，4代表了x,y,h,w的偏移$(t_x, t_y, t_h, t_w)$ **后面说** 。
-- 对于每一个Anchor，分配目标Ground Truth，然后计算与之的偏移作为target$(t_x^*, t_y^*, t_h^*, t_w^*)$这里形状也是[N, M, 9*4]
+- 对于每一个Anchor，分配目标Ground Truth，然后计算与之的偏移作为target=$(t_x^*, t_y^*, t_h^*, t_w^*)$这里形状也是[N, M, 9*4]
 - 把两个Tensor做loss，这里的loss比较奇特，是Fast-RCNN提出来的SmoothL1Loss，具体的下面说，暂且把它看成某种距离。
 
 到此为止，BBox回归告一段落，以后来了N\*M\*9个的anchor，我们就能预测每个Anchor的4个偏移量`shift`，然后把这个偏移作用在这些anchor上形成最终的bbox。这里的loss我们叫做bbox_reg_loss，**最终训练RPN的时候，最小化cls_pred_loss + bbox_reg_loss**使得两者达到一个权衡，这也是深度学习中多目标问题的常用方法。
