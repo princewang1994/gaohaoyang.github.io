@@ -10,7 +10,7 @@
 
 由于阈值的一般是从1.0取到0.0，因此会出现两个特殊端点：(0，0)和(1，1)这个也比较好理解，因为在阈值为0的时候，所有的样本都被预测为正例，因此TPR(召回率)=1，特异性为0，所以FPR=1，另外一个端点刚好相反，最后计算该曲线的线下面积，就求出了我们要的AUC值。
 
-![](/Users/prince/Downloads/ROC-curves-of-different-classifiers-The-ROC-curve-of-an-ideal-classifier-should-be.png)
+![](media/ROC-curves-of-different-classifiers-The-ROC-curve-of-an-ideal-classifier-should-be.png)
 
 那么mAP又是怎么一回事呢，大部分的步骤与AUC相仿，只不过把其中的TPR和FPR曲线换成了Recall和Precision而已，这两个参数使用混淆矩阵同样可以求出。
 
