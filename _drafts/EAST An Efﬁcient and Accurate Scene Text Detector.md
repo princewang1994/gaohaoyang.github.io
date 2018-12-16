@@ -1,0 +1,133 @@
+## EAST: An Efﬁcient and Accurate Scene Text Detector
+
+[TOC]
+
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20181216203301.png)
+
+* 论文：[EAST: An Efﬁcient and Accurate Scene Text Detector](https://arxiv.org/abs/1704.03155)
+* PyTorch版实现：[songdejia/EAST](https://github.com/songdejia/EAST)
+* Tensorflow版实现：[argman/EAST](https://github.com/argman/EAST)
+* 效果展示: [](https://youtu.be/o5asMTdhmvA)
+
+### 前言
+
+本篇博客介绍了EAST，一个单阶段场景文本检测模型，其优点有：结构简单，运行速度快，端到端等，是一篇可操作性很强的文章。
+
+### 场景文本检测
+
+首先介绍一下场景文本检测（Scene Text Detection），场景文本检测的主要任务是在给定的场景图像中使用规则图形或任意四边形检测出场景中出现的文字，该任务服务于OCR任务或场景理解等。
+
+与目标检测不同，场景文本检测的检测框大多是倾斜的，甚至无法使用一个规则的矩形来表示（主要是由于一些立体透视，或者出现弯曲的文字之类的情况）。另外场景文本经常成长条状，与我们常见的接近正方形的目标检测有很大不一样。由于存在这些问题，场景检测无法直接应用通用目标检测的算法，如Faster-RCNN，SSD等，需要一些改进。
+
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20181216191814.png)
+
+### 数据集
+
+目前场景文本检测有众多数据集，不同语言，场景，拍摄设备等，比较著名的有以下几个数据集：
+
+- [ICDAR2015](http://rrc.cvc.uab.es/?ch=4&com=downloads)
+- [COCO-Text](http://rrc.cvc.uab.es/?ch=5&com=downloads)
+- MSRA-TD500
+
+这几个数据集都是比较常用的，使用1)旋转矩形框2)任意四边标注，但是也有一些数据集拥有更加灵活的标注，如曲线形状文字等，可以用于更加精细的算法：
+
+- [Total-Text](https://github.com/cs-chan/Total-Text-Dataset/tree/master/Dataset)
+- SCUT-CTW1500
+
+### 现有工作存在的问题
+
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20181216193838.png)
+
+如上图，本文总结了现有一些方法的工作流，大多数由多个阶段组成，而且一些结构产生中间结果，并不是端到端的，因此这些现有方法大多数速度不快，并且也没办法达到很好的精度（Sub-optimal）。本文设计了一种两阶段场景文本检测模型EAST，其主要贡献有：
+
+1. 提出一种基于FCN的模型EAST，该模型只需要两阶段(全卷积网络和NMS合并)，就可以完成场景文本识别的任务，全程端到端结构
+2. 改框架具有很好的灵活性，能够生成水平矩形框(Axis-align Bounding Box, AABB)，旋转矩形框(Rotated Box, RBOX)和任意四边形(Quadrangle, QUAD)几种预测
+3. 文章在ICDAR2015，COCO-Text，MSRA-TD500上测试，效果达到了State-of-the-art，在ICDAR2015上的F-score值达到0.7820，超出现有方法许多
+
+### 方法
+
+EAST的FCN部分结构如下：
+
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20181216194609.png)
+
+EAST主要基于U形网络，其主干网络Encoder使用PVANet或者VGG，使用PVANet的主要原因是减少计算量，生成的最终特征图的header部分也比较轻，体现了之前说的速度快的优点。这里对于U形网络不做太多阐释，不太了解的读者可以自行查阅UNet结构的设计。
+
+再来说一下U形网络最终产生的几个特征图，上图最右边蓝色卷积层由上到下分别是：
+- 1个通道的文字分数预测
+- 如果需要预测旋转矩形，需要输出4个通道来预测四条边的位置，1个通道来表示矩形旋转角度
+- 如果需要预测任意四边形，需要输出8个通道预测4个点的x，y坐标
+
+下表中阐明了每个通道的作用(AABB部分没有在图中画出来)
+
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20181216195442.png)
+
+接下来解释具体每一个通道的标签(GT)的生成方法，我们以RBOX为例，以下是RBOX的学习目标生成过程：
+
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20181216195525.png)
+
+1. 对于标注的任意四边形Annotation（图中黄色虚线框），向内缩小一些(图中绿色虚线框)并生成分割Mask
+2. 对于每个在Mask中的点，产生4个回归坐标，分别是他的上下左右四个点距离改点的距离偏移(d1, d2, d3, d4)
+3. 对于每个在Mask中的点，产生一个矩形框旋转角度$\theta$
+
+如果是任意四边形目标，8个坐标分别是四个点xy坐标与该点的偏移
+
+### 损失函数
+
+文章对于不同的子任务使用不同的损失函数，对于RBOX来说，主要任务包括文字置信度回归，边框偏移回归以及角度偏移回归
+
+#### 文本分割Loss
+
+对于文字置信度回归，文章使用了类别加权的Cross Entropy来计算：
+$$
+L_s = - \beta Y^* - (1 - \beta)(1 - Y^*)\log(1 - \hat{Y})
+$$
+其中使用$\beta$加权，权重由正负例比例决定，比例越小，权重越大：
+$$
+\beta = 1 - \frac{\sum_{y^* \in Y^*}y^*}{|Y^*|}
+$$
+
+#### RBOX边界偏移Loss
+
+对于RBOX而言，边界偏移Loss使用了IoU损失：
+$$
+L_{AABB} = -\log IoU(\hat{R}, R^*) = -\log\frac{|\hat{R} \cap R^*|}{|\hat{R} \cup R^*|}
+$$
+RBOX还有一个角度，这里使用余弦loss：
+$$
+L_{\theta} = 1 - \cos(\hat{\theta} - \theta^*)
+$$
+以上公式中hat均表示预测，"*"均表示GT。
+
+#### QUAD偏移Loss
+
+对于任意四边形QUAD而言，边界loss则使用了SmoothL1Loss作为损失函数：
+$$
+L_g = L_{QUAD}(\hat{Q}, Q^*) = \min_{\tilde{Q} \in P_{Q}^*} \sum_{c_i \in C_Q, \tilde{c_i \in C_{\hat{Q}}}} \frac{smoothed_{L1}(c_i - \tilde{c}_i)}{8 \times N_{Q^*}}
+$$
+其中使用$N_{Q^*}$作为归一化参数，表示该四边形的最短边的长度：
+$$
+N_{Q^*} = \min D(p_i, p_{(i \ mod \ 4) + 1})
+$$
+
+### Locality-Aware NMS
+
+使用以上的训练结束以后，对于每一个点，如果他的score值大于一定阈值，我们就可以认为这个点在某个文字的内部，然后取其偏移，角度等就可以计算出该框所在的位置，大小等。
+这么多框，自然是需要做一些去重操作，传统的NMS对于每一个Box都会和其余的所有box计算IoU，这样做的框数量非常大，因此$O(n^2)$的速度接受不了，但是基于以上的方法预测出来的框其实是比较有特点的：邻近的像素生成的框重合度都很高，但是不是同一个文本生成的检测框，重合度都很小，因此本文提出先按行“合并”四边形，最后再把剩下的四边形用原始的NMS筛选，这样可以大大降低NMS的时候计算IoU的数量，即Locality-Aware NMS：
+
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20181216202634.png)
+
+### 实验
+
+文本在ICDAR2015数据集上做了一些实验，对比其他方法，本文提升较大：
+
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20181216202833.png)
+
+#### 效果展示
+
+![](http://princepicbed.oss-cn-beijing.aliyuncs.com/blog_20181216203012.png)
+
+## 结论
+
+本文提出了一种基于全卷积神经网络的两阶段场景文本检测模型，其主要优点是整体框架比较清晰，简化了冗杂的中间过程，并实现了端到端的训练和预测，这样大大提高了文本检测的精度，而且使用任意四边形和旋转矩形框的方法来检测文字，也使结果能够更加适用于实际运用，当然在数据集上效果也更好。不过通过阅读源码发现，代码实现起来并不想想象的那么容易，其中有考虑到多边形操作的细节问题，也十分繁琐，但总体上来看，框架结构还是相当清晰，值得学习。
+
+缺点：目前发现有其他框架可以检测出更加奇怪的形状，与这些文章相比，EAST只能生成两种预测框还是死板了一些。
