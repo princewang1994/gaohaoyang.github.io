@@ -183,7 +183,7 @@ $$
 
 私货：本人基于PyTorch实现[princewang1994/TextSnake.pytorch](https://github.com/princewang1994/TextSnake.pytorch)，目前还不算完善，只支持Total-Text数据集，还有许多待跟进，欢迎star~
 
-在实现中比较深的感触就是，几何操作非常繁琐，TotalText数据集并不像想象的那么干净，一些特例的情况在生成训练标签的时候遇到了很多困难。例如bottom边由多个点组成，而不是两个点，bottom边不止有两个等等等等。。。处理这些异常还不是很鲁棒，将就着看吧😂
+在实现中比较深的感触就是，几何操作非常繁琐，TotalText数据集并不像想象的那么干净，一些特例的情况在生成训练标签的时候遇到了很多困难。例如bottom边由多个点组成，而不是两个点，bottom边不止有两个等等等等。
 
 ### 总结
 
