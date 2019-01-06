@@ -44,6 +44,18 @@ $$
 这种方法的实现在[这里](https://gist.github.com/karpathy/d4dee566867f8291f086)
 ![BPTT](media/BPTT.png)
 
+### RNN的实现
+
+输入是一个序列特征X(N, T, D)，其中N是batch_size，T是时间长度，D是每个sample的特征，对batch序列的每个位置x(N, D)都进行变换：
+
+首先假设hidden state是(N, H)维度的，
+
+- x(N, D) -> (x * Whx + h * Whh + b)-> h'(N, H)
+- 遍历序列的每个位置 -> H'(N, T, H)
+- 因此RNN的输入是X[N, T, D]输出是Output[N, T, H]
+- 一般来来说使用序列的最后一个特征就可以用来分类了，此时形状为Output[:, -1, :]，也就是[N, H]
+- 加一个FC进行分类就可以了
+
 ## 传统RNN存在的问题
 
 传统RNN最大的问题是**梯度爆炸**和**梯度消失**问题，如下图是一个简单的BPTT的代码，forward的时候，相当于是多次乘以同一个矩阵$W_{hh}$，BP的时候也会多次乘以$W_{hh}$因此当$W_{hh}$的特征值大于1的时候就出现了梯度爆炸，小于0的时候梯度消失，而LSTM这种情况比较轻（为什么呢？）
@@ -71,7 +83,7 @@ $$
 
 - **输入门（Input Gate）**：用来生成新的记忆加入到$C_t$中，具体的分为两个，$\tilde{C_t}$用来生成新的记忆$i_t$用于表示新生成的记忆有多少加入$C_t$中。
 
-$$  
+$$
     \tilde{C_t} = tanh(W_C \cdot [h_{t-1}, x_t]  + b_C) \\
     i_t = \sigma (W_i \cdot [h_{t-1}, x_t]  + b_i) 
 $$
@@ -80,7 +92,7 @@ $$
 - **输出门（Output Gate）**：输出门主要负责把“温故知新”后合成的知识与当前输入x拼合作为输入做仿射变换，产生最终的输入$h_t$，【注】$\odot$表示elementwise乘法
 
 $$
-    C_t = f_t \odot C_{t-1} +  i_t \odot \tilde{C_t}
+C_t = f_t \odot C_{t-1} +  i_t \odot \tilde{C_t}
     \\o_t = W_o \cdot [h_{t-1}, x_t] + b_o 
     \\h_t = o_t \odot tanh(C_t)
 $$
