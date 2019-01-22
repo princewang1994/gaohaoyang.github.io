@@ -137,8 +137,25 @@ $$
     - 使用dRNNout和dnext_h计算dprev_h和RNN层内的dW，再继续求出dEmbedout和dWe
     - 如此重复T步后剩下一个dprev_h传给出，求dWih结束
 
+### ConvLSTM
 
+- 参考博客：[ConvLSTM](https://zhuanlan.zhihu.com/p/27621053)
+- 文章链接：[Convolutional LSTM Network: A Machine Learning Approach for Precipitation Nowcasting](https://arxiv.org/pdf/1506.04214.pdf)
 
+直接使用LSTM大多数基于**一维**特征，如果是图像输入，需要把图像的特征先拉平成CxHxW，然后再输入LSTM中，这样的结构忽略了图像的局部特征（就和FC层无法很好的处理二维图像的道理一致），因此出现了LSTM的改进版：[ConvLSTM](https://arxiv.org/pdf/1506.04214.pdf)，用于提取二维的特征
 
+#### ConvLSTM与普通LSTM的不同
 
+ConvLSTM的特点有以下几点：
 
+- 使用卷积操作代替了原始LSTM中特征向量f与权重矩阵w的内积操作
+- 中间的变量（输入，输出）全部由一维向量变成了特征图（3维向量）
+- 原来二维的W[n_input, n_output]变成了卷积核[kernel_size, kernel_size, input_channel, output_channel]
+
+这样一来，只需要把对应的部分等价替换即可，接下来是一个例子：
+
+1. input，序列长度为T的特征图，T个普通特征图：[N, T, C, H, W]
+2. 对于input的每一个序列[N, C, H, W]，都经过卷积，相乘操作，更新C（C也是一个特征图），并产生新的特征图H（Hidden feature，[N, C', H', W']）,C和H的大小一致
+3. 遍历每一个T，得到一个输出output：[N, T, C', H', W']
+
+注意到，原始的LSTM是将[N, T, D]变成了[N, T, H]，仅仅改变了特征的维数，而ConvLSTM是将[N, T, C, H, W]变成了[N, T, C', H', W']，也是只改变了特征图的大小，因此两者是对应的
