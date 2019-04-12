@@ -141,6 +141,7 @@ $$
 
 - 参考博客：[ConvLSTM](https://zhuanlan.zhihu.com/p/27621053)
 - 文章链接：[Convolutional LSTM Network: A Machine Learning Approach for Precipitation Nowcasting](https://arxiv.org/pdf/1506.04214.pdf)
+- PyTorch实现:[ndrplz/ConvLSTM_pytorch](https://github.com/ndrplz/ConvLSTM_pytorch)
 
 直接使用LSTM大多数基于**一维**特征，如果是图像输入，需要把图像的特征先拉平成CxHxW，然后再输入LSTM中，这样的结构忽略了图像的局部特征（就和FC层无法很好的处理二维图像的道理一致），因此出现了LSTM的改进版：[ConvLSTM](https://arxiv.org/pdf/1506.04214.pdf)，用于提取二维的特征
 
