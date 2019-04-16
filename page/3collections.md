@@ -41,6 +41,7 @@ type: page
 
 - [Typora](https://typora.io): 一款极简的Markdown编辑器，本站使用的主要编辑器，全平台适配
 - [VS Code](https://code.visualstudio.com): 跨平台编辑器，开箱即用，插件超多
+- Sublime：功能超多的编辑器，也经常使用
 
 ## Mac高效App
 
