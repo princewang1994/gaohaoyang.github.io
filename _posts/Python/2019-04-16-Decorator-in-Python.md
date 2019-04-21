@@ -13,6 +13,8 @@ author: Prince Wang
 
 在Python中，装饰器是一种极为优雅的给现有函数增加功能的方式，本篇博客总结一些装饰器的常见使用方法与复杂装饰器使用方法，文末给出一些例子帮助读者理解。
 
+* 参考博客：https://foofish.net/python-decorator.html
+
 
 
 ## 基本装饰器
@@ -178,3 +180,21 @@ div(1, 2)
 >>> error: input params: (1, 2) {}
 >>> error: output: 0.5
 ```
+
+- 多重装饰器
+
+装饰器可以不止一个，我们可以通过多个`@`堆叠的方式来多个嵌套多个装饰器，功能类似`fucn = d2(d1(func))`，具体语法如下：
+
+```python
+# 离函数越近的装饰器越先调用
+@Logger('decorator2')
+@Logger('decorator1')
+def sum(a, b):
+    return a + b
+
+>>> decorator2: input params: (1, 2) {}
+>>> decorator1: input params: (1, 2) {}
+>>> decorator1: output: 3
+>>> decorator2: output: 3
+```
+
