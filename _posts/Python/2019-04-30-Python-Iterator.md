@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "从Python迭代器到Pytorch的DataLoader"
+title: "从Python迭代器到PyTorch的DataLoader"
 date: 2019-04-30
 categories: Python
 tags: Python
@@ -13,7 +13,7 @@ author: Prince
 
 迭代器（Iterator）是设计模式中一个很重要的模式，其主要作用是通过Iterator类对容器进行迭代，不断返回容器中的元素，以达到遍历容器或其他功能。
 
-大多数语言如C++的STL，Java等都内置了迭代器模式，Python也不例外，本篇博客总结一下Python中的迭代器与生成器的相关知识点，并以Pytorch的DataLoader为例，使读者对Pytorch的数据加载有更深的理解。
+大多数语言如C++的STL，Java等都内置了迭代器模式，Python也不例外，本篇博客总结一下Python中的迭代器与生成器的相关知识点，并以PyTorch的DataLoader为例，使读者对Pytorch的数据加载有更深的理解。
 
 
 
@@ -151,7 +151,7 @@ for elem in it:
 ```python
 it = iter(swinlist)
 for elem in it:
-		...
+    ...
 ```
 
 这个时候需要`SwinListIter`本身也是可以返回迭代器的，当然只需要简单的返回self就可以了
@@ -212,7 +212,9 @@ class DataLoader(object):
     """
     使用dataset, batch_size等参数构造DataLoader
     """
-    def __init__(self, ...):
+    def __init__(self, dataset, batch_size, ...):
+        self.dataset = dataset
+        self.batch_size = batch_size
         pass
     def __iter__(self):
         return _DataLoaderIter(self)
