@@ -198,3 +198,67 @@ def sum(a, b):
 >>> decorator2: output: 3
 ```
 
+## Python静态成员函数的实现
+
+我们注意到Python的静态函数前面都要加一个`@staticmethod`，前面加了@符号，很容易让人想到可能是使用装饰器来实现的，我们来探究一下。
+
+要理解`@staticmethod`我们先要知道Python中的静态成员函数和普通成员函数的区别，下面是一个例子：
+
+```python
+class Point(object):
+    
+    static_var = 1
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        
+    def func(*args):
+        print(args)
+    
+    @staticmethod
+    def static_func(*args):
+        print(args, Point.static_var)
+        
+p = Point(1, 2)
+p.func(1, 2, 3) # (<__main__.Point object at 0x7f61dccfe6a0>, 1, 2, 3)
+p.static_func(1, 2, 3) # (1, 2, 3) 1
+```
+
+现在我们知道了，Python中普通的成员函数在调用的时候会在传入的参数的前面加入一个自身引用，也就是`self`，而如果在方法上面加入了`@staticmethod`标志，在调用的时候则不会加入，也就是说，Python使用装饰器“过滤“掉了参数中的第一个，因此，我们可以实现一个简易版的`@mystaticmethod`装饰器来实现这个功能，下面是代码：
+
+```python
+def mystaticmethod(func):
+    
+    def wrap(*args, **kwargs):
+        return func(*args[1:], **kwargs)
+    
+    return wrap
+
+class Point(object):
+    
+    static_var = 1
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        
+    def func(*args):
+        print(args)
+    
+    @staticmethod
+    def static_func(*args):
+        print(args, Point.static_var)
+    
+    @mystaticmethod
+    def my_static_func(*args):
+        print(args)
+        print(args, Point.static_var)
+        
+p = Point(1, 2)
+p.func(1, 2, 3) # (<__main__.Point object at 0x7f61dcd0a588>, 1, 2, 3)
+p.static_func(1, 2, 3) # (1, 2, 3) 1
+p.my_static_func(1, 2, 3) # (1, 2, 3) 1
+```
+
+效果和自带的一样~DIY完成！
