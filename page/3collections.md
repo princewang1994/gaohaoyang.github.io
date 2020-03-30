@@ -14,6 +14,7 @@ type: page
 
 - [莫烦Python](https://morvanzhou.github.io)：学习各种框架，算法入门的好去处
 - [ModelZoo](https://modelzoo.co):寻找别人造的深度学习轮子的网站
+- [PaperWithCode](https://paperswithcode.com/): 搜索State-of-the-art代码的网站
 
 ## 深度学习
 
@@ -33,14 +34,15 @@ type: page
 
 ## 书籍
 
-- 《机器学习》（周志华著）
-- 《统计学习方法》（李航著）
-- 《数学之美》
+- 《机器学习》（周志华 著）
+- 《统计学习方法》（李航 著）
+- 《数学之美》（吴军 著）
+- 更多书籍：[百度云链接](https://pan.baidu.com/s/1DXzqLslWqxDoeCmr-jSwNQ) 提取码：3ehy
 
 ## 编辑器
 
 - [Typora](https://typora.io): 一款极简的Markdown编辑器，本站使用的主要编辑器，全平台适配
-- [VS Code](https://code.visualstudio.com): 跨平台编辑器，开箱即用，插件超多
+- [VS Code](https://code.visualstudio.com): 跨平台编辑器，开箱即用，插件超多，现在支持远程开发（Remote Development），已经是我最常用的编辑器
 - Sublime：功能超多的编辑器，也经常使用
 
 ## Mac高效App
@@ -62,8 +64,7 @@ type: page
 ## Chrome 插件
 
 - [Octotree](https://chrome.google.com/webstore/detail/octotree/bkhaagjahfmjljalopjnoealnfndnagc)
-
-    - Code tree for GitHub and GitLab
+- Code tree for GitHub and GitLab
 
 * [Chrome扩展及应用开发 -图灵电子书](http://www.ituring.com.cn/minibook/950)
 
